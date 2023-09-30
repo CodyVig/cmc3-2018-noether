@@ -1,0 +1,414 @@
+\documentclass[12pt]{article}
+\usepackage[margin = 1in]{geometry} 
+
+\usepackage
+{
+	mathrsfs, 
+	amsfonts, 
+	amsthm, 
+	amsmath, 
+	esint, 
+	amssymb
+}
+
+\newcommand{\Lagr}	{\mathscr{L}}		% Lagrangian
+\newcommand{\Haml}	{\mathscr{H}}		% Hamiltonian
+\newcommand{\q}		{\vec{q}}
+\newcommand{\p}		{\vec{p}}
+\newcommand{\F}		{\vec{F}}
+\newcommand{\T}		{{\hspace{0.1cm} \scriptscriptstyle{T}}}
+\renewcommand{\baselinestretch}{1.0}
+\setlength{\parindent}{0in}
+
+\begin{document}
+\section{The Calculus of Variations}
+
+Suppose we wish to examine the integral 
+\begin{equation}
+I = \int_{x_1}^{x_2} F(x, y, y')\:dt
+\end{equation}
+
+where $y(x_1) = y_1$ and $y(x_2) = y_2$. We will proceed under the assumption that the bounds of the integral and the form of the function $F$ are given by the context of the problem. Our task is to find the curve $y=y(x)$ that makes $I$ stationary (i.e., maximized or minimized). \\
+
+Suppose $y = y(x)$ is the function that satisfies this property. Then, any variation of the function $y(x)$ will necessarily perturb (1) from its equilibrium. Consider then the following substitution: 
+\begin{equation*}
+y^*(x) = y(x) + \alpha \eta(x)
+\end{equation*}
+
+Here, $\eta(x)$ can be any function that satisfies the boundary conditions (Hence, $\eta(x_1) = \eta(x_2) = 0$), and $\alpha \in R$. Thus, by construction, we know the stationary curves of our integral $I$ occur when $\alpha = 0$. So,
+\begin{equation}
+\left. \frac{dI}{d\alpha} \right|_{\alpha = 0} = 0
+\end{equation}
+
+Substituting our variation into (1) and taking the relevant derivatives, we see
+\begin{align*}
+\frac{dI}{d \alpha}
+	&= \frac{d}{d \alpha} \int_{x_1}^{x_2} 
+		F(x, y^*, y'^*)\:dx 										\\
+	&= \int_{x_1}^{x_2} 
+		\frac{\partial}{\partial \alpha} F(x, y^*, y'^*) \: dx		\\
+	&= \int_{x_1}^{x_2} 
+		\left[ \frac{\partial F}{\partial y^*} \frac{dy^*}{d \alpha} 
+		+ \frac{\partial F}{\partial y'^*} \frac{dy'^*}{d\alpha} \right] dx
+\end{align*}
+
+where in the above, we have used the Leibniz Integral Rule to pass the derivative into the integrand and the chain rule to simplify. In order to satisfy our condition (2), we must have
+\begin{equation*}
+\left. \frac{dI}{d\alpha} \right|_{\alpha = 0} =
+\int_{x_1}^{x_2} \left[ \frac{\partial F}{\partial y} \eta
+		+  \frac{\partial F}{\partial y'} \eta' \right] dx = 0
+\end{equation*}
+
+for all admissible $\eta$. Integrating the second term by parts gives the following
+\begin{equation*}
+\left[ \eta \frac{\partial F}{\partial y'}\right]_{x_1}^{x_2}
+	+   \int_{x_1}^{x_2} \left[ 
+		\frac{\partial F}{\partial y} - \frac{d}{dx} 
+		\frac{\partial F}{\partial y'} \right] \eta \: dx = 0.
+\end{equation*}
+
+Notice that the first term in brackets vanishes under the boundary conditions that $\eta(x_1) = \eta(x_2) = 0$. Thus, the only way to satisfy (2) for all admissible functions $\eta$ is to require
+\begin{equation}
+\frac{\partial F}{\partial y} 
+	= \frac{d}{dx} \frac{\partial F}{\partial y'}
+\end{equation}
+
+The above is known as the Euler-Lagrange Equation. It is a fundamental underlying principle of the calculus of variations and we will soon see its significance in classical mechanics.
+
+\pagebreak
+\section{The Lagrangian and the Hamiltonian}
+
+In physics, we often talk about the \textit{energy} within a system. Let us take a moment to define this term clearly here. Consider a system of $n$ particles, each with mass $m_i$ and position function $\q_i = \q_i(t)$ moving through some conservative vector field. The $i$'th particle's kinetic energy is
+\begin{equation*}
+T_i = \frac{1}{2}m_i\dot{q}_i^2 
+	= \frac{1}{2}m_i(\dot{x}_i^2 + \dot{y}_i^2 + \dot{z}_i^2)
+\end{equation*} 
+
+(where the overdots represent derivatives with respect to time) and its potential energy is
+\begin{equation*}
+U_i = U_i(\q_i) = U_i(x_i, y_i, z_i)
+\end{equation*}
+
+It will soon prove useful to consider the evolution of the difference between the total kinetic energy $T = \sum T_i$ and the total potential energy $U = \sum U_i$ of a system. Thus, we define the \textit{action} of that system as the following functional: 
+\begin{equation}
+S = \int_{t_1}^{t_2} \Lagr(t, \q_i, \dot{\q}_i) \, dt
+\end{equation}
+
+where $\Lagr = T-U$ is called the \textit{Lagrangian} of that system. This integral is in the form of (1). Thus, the stationary curves of the action must satisfy the Euler-Lagrange equation. That is,
+\begin{equation}
+\frac{\partial \Lagr}{\partial \q_i} 
+	= \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\q}_i}
+\end{equation}
+
+for each particle $i = 1, ..., n$. In this case, $\frac{\partial}{\partial \q} := [ 
+		\frac{\partial}{\partial q^1}, 
+		\frac{\partial}{\partial q^2}, 
+		\frac{\partial}{\partial q^3} 
+	 ]$ is a vector of partial derivatives with respect to the vector components $q^j$ written in numerator layout notation\footnote{
+	Our convention herein will be to treat vectors, and derivatives of 
+	vectors with respect to scalars, as column vectors, and to treat
+	derivatives of scalars with respect to vectors ac column vectors.
+	In matrix calculus, this notation convention is referred to as
+	\textit{numerator layout}. 
+}.  \\
+
+Let's consider the left side of (5):
+\begin{align*}
+\frac{\partial \Lagr}{\partial \q_i} 
+	&= \frac{\partial}{\partial \q_i} \Big\{ T-U \Big\} 
+	= \frac{\partial T}{\partial \q_i} - \frac{\partial U}{\partial \q_i} 
+\end{align*}
+Because the kinetic energy of a particle does not explicitly depend on its position, $\frac{\partial T}{\partial \q_i}$ must be zero. Thus,
+\begin{equation*}
+\frac{\partial \Lagr}{\partial \q_i}	= - \frac{\partial U}{\partial \q_i}
+\end{equation*}
+
+By definition, the negative of the gradient of the potential energy generated by a vector field is just the force $\F^\T_i$ on the $i$'th particle. Thus, we see
+\begin{equation}
+\frac{\partial \Lagr}{\partial \q_i} = \F^\T_i
+\end{equation} 
+
+Now let's consider the right side of (5):
+\begin{align*}
+\frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\q}_i}
+	&= \frac{d}{dt} \frac{\partial}{\partial \dot{\q}_i}
+		\Big\{ T - U \Big\} 
+	= \frac{d}{dt} \left\{ \frac{\partial T}{\partial \dot{\q}_i}
+		- \frac{\partial U}{\partial \dot{\q}_i} \right\}			
+\end{align*}
+
+Because the potential energy does not explicitly depend on the speed of the particle, it must be the case that $\frac{\partial U}{\partial \dot{\q}_i}$ is zero. And, $\frac{\partial T}{\partial \dot{\q}_i} = \frac{\partial}{\partial \dot{\q}_i} \{ \frac{1}{2} m \dot{q}_i^2 \} = m\dot{\q}^\T_i$. Thus,
+\begin{align*}
+\frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\q}_i}	
+	= \frac{d}{dt} \left\{ m\dot{\q}^\T_i \right\} = m\ddot{\q}^\T_i 
+\end{align*}
+
+But, $\ddot{\q}^\T_i$ is just the acceleration $\vec{a}^\T_i$ of the particle. So,
+\begin{equation*}
+\frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\q}^\T_i} = m\vec{a}^\T_i	
+\end{equation*}
+
+Thus, our Euler-Lagrange equation reduces to the equation $\F=m\vec{a}^\T$. This is just Newton's Second Law, which is a fundamental law of physics that all systems obey. Therefore, it must be the case that the actual path an object takes upon moving from one state to another is the path that makes the action stationary. \\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Legendre Transform %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Thus far, we have shown that Lagrange's formalism of mechanics is equivalent to Newton's. However, there exists a third mathematical formulation: Hamiltonian Mechanics. The quantity of interest here is called the \textit{Hamiltonian}, and it is defined to be the Legendre Transform of the Lagrangian. That is,
+\begin{equation}
+\Haml = \sum_i \frac{\partial \Lagr}{\partial \dot{\q}^\T_i} \dot{\q}_i - \Lagr
+\end{equation}
+
+We have shown earlier that $\frac{\partial \Lagr}{\partial \dot{\q}^\T_i} = m\dot{\q}^\T_i$, which in physics we call the momentum, $\p_i^\T$, of the $i$'th particle. So, we can rewrite (7) in terms of that momentum as follows:
+\begin{equation}
+\Haml = \sum_i \p_i^\T \dot{\q}_i - \Lagr
+\end{equation}
+
+Let us explore (8) further:
+\begin{align*}
+\Haml 	&= \sum_i \p_i^\T \dot{\q}_i - \Lagr	\\
+		&= \sum_i m \dot{q}_i^2 - \Lagr	\\
+		&= 2 \sum_i \left( \frac{1}{2} m \dot{q}_i^2 \right) - \Lagr	\\
+		&= 2 T - (T - U)	\\
+		&= T + U
+\end{align*}
+
+Thus, we have shown that the Hamiltonian is just the total energy within a system. The significance of the Hamiltonian will not be addressed here, but with this notion of the Hamiltonian and our understanding of the Lagrangian, we are now ready to explore the consequences of Noether's Theorem.
+
+
+
+\pagebreak
+\section{Noether's Theorem}
+
+If a functional of the form
+$$
+J[y] = \int_{x_1}^{x_2} F(x, y, y') \, dx
+$$
+is invariant under the family of transformations
+$$
+y_i^*(x) = y_i(x) + \varepsilon \mu_i (x) \qquad
+y_i'^*(x) = y'_i(x) + \varepsilon \mu'_i (x)
+$$
+where $\varepsilon$ is an infinitesimal scalar parameter, then 
+\begin{equation}
+\sum_i \frac{\partial F}{\partial y'_i} \mu_i = \text{constant.}
+\end{equation}
+
+\textit{Proof:} \\ Because our functional is invariant under the transformation, its differential must be zero. That is,
+\begin{equation*}
+dF = 
+	F (x, y_i + \varepsilon \mu_i, y'_i + \varepsilon \mu'_i)
+ -	F (x, y_i, y'_i)	
+	= 0
+\end{equation*}
+which, by the definition of the differential, we may write as
+\begin{equation*}
+\varepsilon \sum_i
+\left[
+	\frac{\partial F}{\partial y_i}  \mu_i
+  +	\frac{\partial F}{\partial y'_i}  \mu_i'
+\right] = 0
+\end{equation*}
+
+But, we know that the stationary curves of our functional are solutions to the Euler-Lagrange equation (3), which allows for the following substitution
+\begin{align*}
+\varepsilon \sum_i
+\left[
+	\frac{d}{dx} \frac{\partial F}{\partial y'_i}  \mu_i
+  + \frac{\partial F}{\partial y'_i}  \mu_i'
+\right] &= 0 \\
+\varepsilon \frac{d}{dx} 
+\sum_i 
+	\frac{\partial F}{\partial y'_i} \mu_i &= 0 \\
+\therefore 
+\sum_i 
+	\frac{\partial F}{\partial y'_i} \mu_i &= \text{constant.}
+\end{align*}
+
+\hfill\ensuremath{\blacksquare}
+
+If we apply Noether's Theorem to the action (a functional involving the Lagrangian) of a given physical system, we will see that every continuous symmetry within the Lagrangian corresponds to a conservation law. That is, if $\Lagr (t, q_i, \dot{q}_i)$ is invariant under the same family of transformations above, then
+$$
+\sum_i \frac{\partial \Lagr}{\partial \dot{\q}_i} \mu_i = \text{const.}
+$$
+
+
+Shown below are three such conservation laws.
+
+\pagebreak
+\subsection{Conservation of Linear Momentum}
+
+Suppose we have a system of $n$ particles in some conservative vector field whose potential depends only on the relative positions of the particles. Then our Lagrangian has the form
+\begin{equation*}
+\Lagr = \frac{1}{2} \sum_i m_i \dot{q}_i^2 
+		- U(\{  \vec{q}_h - \vec{q}_k  \}) 
+		\qquad (h = 1, ... , n-1, k > h)
+\end{equation*}
+
+Then it is clear that the Lagrangian is invariant under spacial translations. Such spacial translations can be represented by
+\begin{equation*}
+\vec{q}_i\,^* = \vec{q}_i + \varepsilon \hat{u} \qquad
+\dot{\vec{q}}_i\,^* = \dot{\vec{q}}_i
+\end{equation*}
+
+where $\hat{u} = [u^1, u^2, u^3]^T$ is a unit vector in the direction of the translation and $\varepsilon$ is the infinitesimal length of that translation. Then in this case we have $\mu_i = \hat{u}_i$ and thus
+\begin{align*}
+\sum_i \frac{\partial \Lagr}{\partial \dot{\q}_i} \mu_i 
+	&= \text{const.} \\
+\sum_i \frac{\partial \Lagr}{\partial \dot{\q}_i} \hat{u}_i 
+	&= \text{const.}	
+\end{align*}
+As our convention has been to adopt numerator layout notation, we know the above multiplication is defined. Since we know that $\sum \frac{\partial \Lagr}{\partial \dot{q}_i}$ is just the momentum, $\p^\T$, we have
+\begin{align*}	
+\sum_i \frac{\partial \Lagr}{\partial \dot{\q}_i} \hat{u}_i 
+				&= \text{const.} \\
+\p^\T \hat{u}  	&= \text{const.}
+\end{align*}
+
+But because $\hat{u}$ is arbitrary, it must be the case that 
+$$
+\vec{p} = \vec{const.}
+$$
+
+Therefore, symmetry under spacial translation implies the conservation of linear momentum.
+
+\pagebreak
+\subsection{Conservation of Angular Momentum}
+
+Suppose again that we have a system of $n$ particles in some conservative vector field whose potential depends now only on the distance between the particles. Then our Lagrangian has the form
+\begin{equation*}
+\Lagr = \frac{1}{2} \sum_i m_i \dot{q}_i^2 
+		- U(\{ | \vec{q}_h - \vec{q}_k | \}) 
+		\qquad (h = 1, ... , n-1, k > h)
+\end{equation*}
+
+Then it is clear that our Lagrangian is invariant under rotations about an arbitrary axis. Let $\hat{n}$ be a unit vector parallel to this axis of rotation. Then, the coordinate transformation can be described by
+\begin{equation*}
+\q_i\,^* = \q_i + \varepsilon 
+	( \hat{n} \times \q_i ) \qquad
+\dot{\q}^\T_i\,^* = \dot{\q}^\T_i + \varepsilon 
+	( \hat{n} \times \dot{\q}^\T_i )
+\end{equation*}
+
+where $\varepsilon$ is an infinitesimal rotation angle. Then in this case we have $\mu_i = ( \hat{n} \times \q_i )$ and thus
+\begin{align*}
+\sum_{i=1}^n \frac{\partial \Lagr}{\partial \dot{\q}_i} \mu_i 
+	&= \text{const.} \\
+\sum_{i=1}^n \frac{\partial \Lagr}{\partial \dot{\q}_i} 
+	( \hat{n} \times \q_i ) &= \text{const.} \\
+\sum_{i=1}^n \p_i^\T ( \hat{n} \times \q_i ) 
+	&= \text{const.} \\ 
+\sum_{i=1}^n \hat{n}^{\scriptscriptstyle{T}} (\q_i \times \p_i)
+	&= \text{const.} 
+\end{align*}
+
+The vector product $\q_i \times \p_i$ is the definition of the angular momentum, $\vec{L}_i$, of the $i$'th particle. Thus,
+\begin{align*}
+\sum_{i=1}^n \hat{n}^{\scriptscriptstyle{T}} \vec{L}_i
+	&= \text{const.} 			\\
+\hat{n}^{\scriptscriptstyle{T}} \vec{L}
+	&= \text{const.} 
+\end{align*}
+
+where $L$ is the total angular momentum of the system. But because $\hat{n}$ is an arbitrary vector, we must conclude that
+\begin{equation*}
+\vec{L} = \vec{const.}
+\end{equation*}
+
+Therefore, symmetry under rotation implies the conservation of angular momentum.
+
+\pagebreak
+\subsection{Conservation of Energy}
+
+
+Here we will use a different approach than the theorem listed above. Suppose we wish to see how the Lagrangian $\Lagr = \Lagr (\q_i, \dot{\q}^\T_i, t)$ changes with time. Taking the total derivative, we see
+\begin{equation*}
+\frac{d \Lagr}{dt}	
+	= \sum_i \left[ \frac{\partial \Lagr}{\partial \q_i} \dot{\q}_i 
+		+ \frac{\partial \Lagr}{\partial \dot{\q}_i} \ddot{\q}_i \right]
+		+ \frac{\partial \Lagr}{\partial t}
+\end{equation*}
+
+We have shown that $\Lagr$ satisfies the Euler-Lagrange equation, so we can make the substitution that $\frac{\partial \Lagr}{\partial \q_i} = \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\q}_i}$, which will allow us to simplify the above:
+\begin{align*}
+\frac{d \Lagr}{dt}	
+	&= \sum_i \left[ \frac{\partial \Lagr}{\partial \q_i} \dot{\q}_i 
+		+ \frac{\partial \Lagr}{\partial \dot{\q}_i} \ddot{\q}_i \right]
+		+ \frac{\partial \Lagr}{\partial t}								\\
+\frac{d \Lagr}{dt}	
+	&= \sum_i \left[ 
+		\frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\q}_i} \dot{\q}_i 
+		+ \frac{\partial \Lagr}{\partial \dot{\q}_i} \ddot{\q}_i \right]
+		+ \frac{\partial \Lagr}{\partial t}								\\
+\frac{d \Lagr}{dt}
+	&= \frac{d}{dt} \left\{ \sum_i \frac{\partial \Lagr}
+		{\partial \dot{\q}_i} \dot{\q}_i \right\}
+		+ \frac{\partial \Lagr}{\partial t}								\\
+0	&= \frac{d}{dt} \left\{ \sum_i \frac{\partial \Lagr}
+		{\partial \dot{\q}_i} \dot{\q}_i - \Lagr \right\} 
+		+ \frac{\partial \Lagr}{\partial t}
+\end{align*}
+
+Recall that $\frac{\partial \Lagr}{\partial \dot{\q}_i} = \p_i^\T$ is the momentum of the $i$'th particle in our system. Imposing the simplification and explicitly writing the dot product, we have
+
+\begin{equation*}
+\frac{d}{dt} \left\{ \sum_i \p_i^\T \dot{\q}_i - \Lagr \right\} 
+		+ \frac{\partial \Lagr}{\partial t} = 0
+\end{equation*}
+Notice that the term in brackets above is just the Hamiltonian of the system. Furthermore, because neither the kinetic nor the potential energy of most physical systems depend explicitly on time, it is reasonable to proceed under the assumption that $\frac{\partial \Lagr}{\partial t} = 0$. Thus, we have
+\begin{equation*}
+\frac{d\Haml}{dt} = 0 \implies \Haml = \text{constant.}
+\end{equation*}
+
+But, the Hamiltonian, as we have shown previously, is just the total energy within a system. Thus,
+\begin{equation*}
+T + U = \text{constant}
+\end{equation*} 
+
+Therefore, symmetry over time implies conservation of energy.
+
+\pagebreak
+\subsection{Generalizations}
+
+Thus far, we have stated Noether's Theorem as follows: 
+\begin{quote}
+If a functional of the form
+$$
+J[y] = \int_{x_1}^{x_2} F(x, y, y') \, dx
+$$
+is invariant under the family of transformations
+$$
+y_i^*(x) = y_i(x) + \varepsilon \mu_i (x) \qquad
+y_i'^*(x) = y'_i(x) + \varepsilon \mu'_i (x) \qquad
+x^* = x
+$$
+where $\varepsilon$ is an small scalar parameter. Then, 
+\begin{equation*}
+\sum_i \frac{\partial F}{\partial y'_i} \mu_i = \text{const.}
+\end{equation*}
+\end{quote}
+
+This is actually a special case of the more general Noether's Theorem which is presented below without proof: 
+
+\begin{quote}
+Suppose we allow the following coordinate transformation:
+\begin{align*}
+x^* 	&= \Phi   (x, y, y'; \varepsilon) \\
+y_i^* 	&= \Psi_i (x, y, y'; \varepsilon) 
+\end{align*}
+
+Where $\varepsilon = 0$ corresponds to the identity transformation $x^* = x$ and $y_i^* = y_i$. Let
+\begin{align*}
+\varphi = \left. \frac{d \Phi}{d \varepsilon} \right|_{\varepsilon = 0} \\
+\psi_i 	= \left. \frac{d \Psi_i}{d \varepsilon} \right|_{\varepsilon = 0}
+\end{align*}
+
+If a functional of the form (1) is invariant under the transformations listed above, then the following is constant for any $y = y_i(x)$ that satisfies the Euler-Lagrange equation:
+\begin{equation}
+\sum_i \frac{\partial F}{\partial y_i'} \psi_i + \left(F - \sum_i \frac{\partial F}{\partial y_i'} y_i' \right) \varphi = \text{const.}
+\end{equation}
+\end{quote}
+
+It is clear that this reduces to the theorem discussed previously if we let $\Phi (x, y, y'; \varepsilon) = x$ and $\Psi_i (x, y, y'; \varepsilon) = y_i + \varepsilon \mu_i$
+
+\end{document}
